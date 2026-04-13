@@ -1,0 +1,24 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+.vs/
+.vscode/
+
+# Rider
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+
+# Logs
+*.log
+
+# OS generated files
+Thumbs.db
+.DS_Store

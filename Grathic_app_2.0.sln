@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grathic_app_2.0", "Grathic_app_2.0.csproj", "{75E56396-A5E1-9753-7CE7-5E5D2455D057}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75E56396-A5E1-9753-7CE7-5E5D2455D057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75E56396-A5E1-9753-7CE7-5E5D2455D057}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75E56396-A5E1-9753-7CE7-5E5D2455D057}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75E56396-A5E1-9753-7CE7-5E5D2455D057}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4B1F574B-0EB4-4BF8-854E-4FFE975B81D0}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,12 @@
+<Window x:Class="Grathic_app_2._0.ShopWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Grathic_app_2._0"
+        mc:Ignorable="d"
+        Title="ShopWindow" Height="450" Width="800">
+        <Grid>
+            <Button Content="Close shop" Height="40" Width="100" Click="CloseWindow_click"></Button>
+        </Grid>
+</Window>
