@@ -6,7 +6,56 @@
         xmlns:local="clr-namespace:Grathic_app_2._0"
         mc:Ignorable="d"
         Title="ShopWindow" Height="450" Width="800">
-        <Grid>
-            <Button Content="Close shop" Height="40" Width="100" Click="CloseWindow_click"></Button>
+    <Canvas x:Name="canvasRoot" Background="White">
+            <TextBlock Text="Shop" FontSize="28" FontWeight="Bold" Canvas.Left="5" Canvas.Top="5"></TextBlock>
+            <Button Content="Close shop" Height="40" Width="100" Click="CloseWindow_click" 
+            HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Right="40" Canvas.Bottom="20"></Button>
+        <Grid Margin="0,0,0,60">
+
+            <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+                <GroupBox Header="Power click" Grid.Row="0" Grid.Column="0" Margin="60">
+                    <StackPanel>
+                        <Button Content="Power click" Height="40" Width="102" Click="UpgradePower_click"></Button>
+                        <StackPanel Orientation="Horizontal">
+                            <Border x:Name="PowClLv1" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
+                            <Border x:Name="PowClLv2" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
+                            <Border x:Name="PowClLv3" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+            <GroupBox Header="Auto click" Grid.Row="0" Grid.Column="1" Margin="60">
+                <StackPanel>
+                    <Button Content="Auto clicks" Height="40" Width="102"></Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Border x:Name="AutoClLv1" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
+                        <Border x:Name="AutoClLv2" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
+                        <Border x:Name="AutoClLv3" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Critical click" Grid.Row="1" Grid.Column="0" Margin="60">
+                <StackPanel>
+                    <Button Content="Critical clicks" Height="40" Width="102"></Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Border x:Name="CritClLv1" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
+                        <Border x:Name="CritClLv2" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
+                        <Border x:Name="CritClLv3" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
+                    </StackPanel>
+                </StackPanel>     
+            </GroupBox>
+            <GroupBox Header="Restart" Grid.Row="1" Grid.Column="1" Margin="60">
+                <Button Content="Restart" Height="40" Width="102"></Button>
+            </GroupBox>
+            </Grid>
         </Grid>
+</Canvas>
 </Window>
