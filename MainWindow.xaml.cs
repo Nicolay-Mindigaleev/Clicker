@@ -10,6 +10,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Nodes;
+using System.Windows.Threading;
 namespace Grathic_app_2._0;
 
 /// <summary>
@@ -17,66 +19,27 @@ namespace Grathic_app_2._0;
 /// </summary>
 public partial class MainWindow : Window, INotifyPropertyChanged
 {
+    
     public MainWindow()
     {
         InitializeComponent();
+        CritClick = new Random();
+        autoClickTimer = new DispatcherTimer();
+        autoClickTimer.Interval = TimeSpan.FromSeconds(2);
+        autoClickTimer.Tick += AutoClickTimer_click;
         this.DataContext = this;
     }
-    /*private void Button_click(object sender, RoutedEventArgs e)
-    {
-        string text = valueTextBox.Text;
-        if (string.IsNullOrWhiteSpace(text))
-            MessageBox.Show("Введите что нибудь");
-        double value = double.Parse(text);
-        if (Operations.SelectedItem == null)
-        {
-            MessageBox.Show("Operation not choosen");
-            return;
-        }
-        int selectedOperation = Operations.SelectedIndex;
-        double result = 0;
-        if (selectedOperation == 0)
-        {
-            result = value * value;
-        }
-        else if (selectedOperation == 1)
-            result = value * value * value;
-        else if (selectedOperation == 2)
-        {
-            if (value < 0)
-            {
-                CalculatedValue.Text = "NaN";
-                return;
-            }
-            result = Math.Sqrt(value);     
-        }
-        CalculatedValue.Text = result.ToString();
-        ComboBoxItem selected = Operations.SelectedItem as ComboBoxItem;
-        string operation = selected.Content.ToString();
-        
-        HistoryList.Items.Add(text + " " + operation + " = " + result);
-    }
-    private void ClearButton_click(object sender, RoutedEventArgs e)
-    {
-        valueTextBox.Clear();
-        CalculatedValue.Clear();
-    }
-    private void DeleteItem_click(object sender, RoutedEventArgs e)
-    {
-        if (HistoryList.SelectedItem == null)
-        {
-            MessageBox.Show("Item not choosen");
-            return;
-        }   
-        HistoryList.Items.Remove(HistoryList.SelectedItem);
-    }
-    private void ClearListButton_click(object sender, RoutedEventArgs e)
-    {
-        HistoryList.Items.Clear();
-    }
-    private void OperationChanged(object sender, RoutedEventArgs e)
-    {
-    }*/
+    //Shop parameters
+    public const int OpenedShopScoreCount = 10;
+    public int PowerClickLevel = 0;
+    public int AutoClickLevel = 0;
+    public int CriticalClickLevel = 0;
+    public float CriticalChance = 0;
+    private Random CritClick;
+    private DispatcherTimer autoClickTimer;
+    public int autoClickPower = 0;
+
+    //global param
     private int clicksCount = 0;
     public int ClicksCount
     {
@@ -87,30 +50,70 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
     }
     public int clickPower = 1;
-    public const int OpenedShopScoreCount = 10;
-    public const int WinScore = 30;
+    public const int WinScore = 1000;
     private void mainButton_click(object sender, RoutedEventArgs e)
-    {
-        ClicksCount += clickPower;
+    { 
+        double CritNum = CritClick.NextDouble();
+        int CritClickBonus = 1;
+        if (CritNum <= CriticalChance)
+            CritClickBonus = 5;
+        ClicksCount += clickPower * CritClickBonus;
         if (ClicksCount == OpenedShopScoreCount)
         {
             ShopButton.IsEnabled = true;
         }
-        if (ClicksCount == WinScore)
+        if (ClicksCount >= WinScore)
         {
             MessageBox.Show("Game over");
             MainButton.IsEnabled = false;
         }
-
     }
     private void ShopButton_click(object sender, RoutedEventArgs e)
     {
-        ShopWindow shopWindow = new ShopWindow();
+        ShopWindow shopWindow = new ShopWindow(this, ClicksCount, PowerClickLevel, AutoClickLevel, CriticalClickLevel);
+        shopWindow.ScoreChanged += OnScoreChanged;
+        shopWindow.ClickPowerUpgrade += PowerUpgrade;
+        shopWindow.ClickAutoUpgrade += AutoUpgrade;
+        shopWindow.ClickCriticalUpgrade += CriticalUpgrade;
         shopWindow.ShowDialog();
     }
+    private void OnScoreChanged(int newScore)
+    {
+        ClicksCount = newScore;
+    }
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged([CallerMemberName] string name = null)
+    private void OnPropertyChanged([CallerMemberName] string name = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }   
+    public void PowerUpgrade()
+    {
+        clickPower *= 2;
+        PowerClickLevel++;
+    }
+    public void AutoUpgrade(int level)
+    {
+        AutoClickLevel++;
+        if (level == 0)
+        {
+            autoClickPower = 3;
+            autoClickTimer.Start();
+        }
+        else if (level == 1)
+            autoClickPower = 7;
+        else
+            autoClickPower = 10;
+    }
+    public void CriticalUpgrade(int level)
+    {
+        if (level == 0)
+            CriticalChance = 0.005f;
+        else
+            CriticalChance += 0.0025f;
+        CriticalClickLevel++;
+    }
+    private void AutoClickTimer_click(object sender, EventArgs e)
+    {
+        ClicksCount += autoClickPower;
+    }
 }
