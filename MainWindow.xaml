@@ -7,22 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-<!-->
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBox x:Name="valueTextBox" Height="30" Width="200"></TextBox>
-            <TextBox x:Name="CalculatedValue" Height="30" Width="200" IsReadOnly="true"></TextBox>
-            <Button Content="Calculate" Height="40" Width="100" Click="Button_click" Background="Green"></Button>
-            <Button Content="Clear" Height="40" Width="100" Click="ClearButton_click" Background="Red"></Button>
-            <Button Content="Clear list" Height="40" Width="100" Click="ClearListButton_click"></Button>
-            <Button Content="Delete item" Height="40" Width="100" Click="DeleteItem_click"></Button>
-            <ComboBox x:Name="Operations" SelectionChanged="OperationChanged" Width="200" Height="30">
-                <ComboBoxItem Content="^2"></ComboBoxItem>
-                <ComboBoxItem Content="^3"></ComboBoxItem>
-                <ComboBoxItem Content="^0.5"></ComboBoxItem>
-            </ComboBox>
-            <ListBox x:Name="HistoryList" Height="120" Width="200"></ListBox>
-        </StackPanel>
-<!-->
     <StackPanel Orientation="Horizontal">
         <TextBlock Text="Clicks count: "></TextBlock>
         <TextBlock Text="{Binding ClicksCount}"></TextBlock>
