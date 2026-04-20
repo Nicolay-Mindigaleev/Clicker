@@ -40,7 +40,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public int autoClickPower = 0;
 
     //global param
-    private int clicksCount = 0;
+    private int clicksCount = 890;
     public int ClicksCount
     {
         get {return clicksCount;}
@@ -58,7 +58,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (CritNum <= CriticalChance)
             CritClickBonus = 5;
         ClicksCount += clickPower * CritClickBonus;
-        if (ClicksCount == OpenedShopScoreCount)
+        if (ClicksCount >= OpenedShopScoreCount)
         {
             ShopButton.IsEnabled = true;
         }
@@ -75,6 +75,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         shopWindow.ClickPowerUpgrade += PowerUpgrade;
         shopWindow.ClickAutoUpgrade += AutoUpgrade;
         shopWindow.ClickCriticalUpgrade += CriticalUpgrade;
+        shopWindow.ClickRestartButton += Restarting;
         shopWindow.ShowDialog();
     }
     private void OnScoreChanged(int newScore)
@@ -111,6 +112,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         else
             CriticalChance += 0.0025f;
         CriticalClickLevel++;
+    }
+    public void Restarting()
+    {
+        clickPower = 1;
+        PowerClickLevel = 0;
+        AutoClickLevel = 0;
+        CriticalClickLevel = 0;
+        CriticalChance = 0;
+        autoClickPower = 0;
+        autoClickTimer.Stop();
     }
     private void AutoClickTimer_click(object sender, EventArgs e)
     {

@@ -22,6 +22,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
     public event Action ClickPowerUpgrade;
     public event Action<int> ClickAutoUpgrade;
     public event Action<int> ClickCriticalUpgrade;
+    public event Action ClickRestartButton;
     public ShopWindow(MainWindow mainWin, int currScore, int powClickLvl, int autoClickLvl, int critClickLvl)
     {
         InitializeComponent();
@@ -58,8 +59,33 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
     private int criticalClickLevel;
     //prices
     private int powerClickPrice = 15;
+    public int PowerClickPrice
+    {
+        get {return powerClickPrice;}
+        set {
+                powerClickPrice = value;
+                OnPropertyChanged();
+            }
+    }
     private int autoClickPrice = 15;
+    public int AutoClickPrice
+    {
+        get {return autoClickPrice;}
+        set {
+                autoClickPrice = value;
+                OnPropertyChanged();
+            }
+    }
     private int criticalClickPrice = 15;
+    public int CriticalClickPrice
+    {
+        get {return criticalClickPrice;}
+        set {
+                criticalClickPrice = value;
+                OnPropertyChanged();
+            }
+    }
+    private int restartPrice = 900;
     private void CheckData()
     {
         if (playerScore >= powerClickPrice)
@@ -76,7 +102,10 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
             CriticalClickButton.IsEnabled = true;
         else
             CriticalClickButton.IsEnabled = false;
-
+        if (playerScore >= restartPrice)
+            RestartButton.IsEnabled = true;
+        else   
+            RestartButton.IsEnabled = false;
         if (powerClickLevel == 1)
         {
             PowClLv1.Background = new SolidColorBrush(Colors.LightGreen);
@@ -91,6 +120,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
             PowClLv1.Background = new SolidColorBrush(Colors.Red);
             PowClLv2.Background = new SolidColorBrush(Colors.Red);
             PowClLv3.Background = new SolidColorBrush(Colors.Red);
+            PowerClickButton.Content = "MAX";
             PowerClickButton.IsEnabled = false;
         }
 
@@ -108,6 +138,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
             AutoClLv1.Background = new SolidColorBrush(Colors.Red);
             AutoClLv2.Background = new SolidColorBrush(Colors.Red);
             AutoClLv3.Background = new SolidColorBrush(Colors.Red);
+            AutoClickButton.Content = "MAX";
             AutoClickButton.IsEnabled = false;
         }
 
@@ -125,6 +156,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
             CritClLv1.Background = new SolidColorBrush(Colors.Red);
             CritClLv2.Background = new SolidColorBrush(Colors.Red);
             CritClLv3.Background = new SolidColorBrush(Colors.Red);
+            CriticalClickButton.Content = "MAX";
             CriticalClickButton.IsEnabled = false;
         }
     }
@@ -139,7 +171,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
         ScoreChanged?.Invoke(playerScore);
         ClickPowerUpgrade?.Invoke();
         powerClickLevel++;
-        powerClickPrice *= 4;
+        PowerClickPrice *= 4;
         CheckData();
     }
     private void UpgradeAuto_click(object sender, RoutedEventArgs e)
@@ -148,7 +180,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
         ScoreChanged?.Invoke(playerScore);
         ClickAutoUpgrade?.Invoke(autoClickLevel);
         autoClickLevel++;
-        autoClickPrice *= 4;
+        AutoClickPrice *= 4;
         CheckData();
     }
     private void UpgradeCritical_click(object sender, RoutedEventArgs e)
@@ -157,8 +189,19 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
         ScoreChanged?.Invoke(playerScore);
         ClickCriticalUpgrade?.Invoke(criticalClickLevel);
         criticalClickLevel++;
-        criticalClickPrice *= 4;
+        CriticalClickPrice *= 4;
         CheckData();
+    }
+    private void Restart_click(object sender, RoutedEventArgs e)
+    {
+        MessageBoxResult AUSure = MessageBox.Show("Are you sure?","SURE?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        if (AUSure == MessageBoxResult.Yes)
+        {
+            PlayerScore -= restartPrice;
+            ScoreChanged?.Invoke(playerScore);
+            ClickRestartButton?.Invoke();
+            this.Close();         
+        }
     }
     public event PropertyChangedEventHandler PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string name = null)

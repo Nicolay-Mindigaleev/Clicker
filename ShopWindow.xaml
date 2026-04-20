@@ -26,7 +26,7 @@
             </Grid.RowDefinitions>
                 <GroupBox Header="Power click" Grid.Row="0" Grid.Column="0" Margin="65">
                     <StackPanel>
-                        <Button x:Name="PowerClickButton" Content="Power click" Height="40" Width="102" IsEnabled="false" Click="UpgradePower_click"></Button>
+                        <Button x:Name="PowerClickButton" Content="{Binding PowerClickPrice}" Height="40" Width="102" IsEnabled="false" Click="UpgradePower_click"></Button>
                         <StackPanel Orientation="Horizontal">
                             <Border x:Name="PowClLv1" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
                             <Border x:Name="PowClLv2" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
@@ -36,7 +36,7 @@
                 </GroupBox>
             <GroupBox Header="Auto click" Grid.Row="0" Grid.Column="1" Margin="65">
                 <StackPanel>
-                    <Button x:Name="AutoClickButton" Content="Auto clicks" Height="40" Width="102" IsEnabled="false" Click="UpgradeAuto_click"></Button>
+                    <Button x:Name="AutoClickButton" Content="{Binding AutoClickPrice}" Height="40" Width="102" IsEnabled="false" Click="UpgradeAuto_click"></Button>
                     <StackPanel Orientation="Horizontal">
                         <Border x:Name="AutoClLv1" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
                         <Border x:Name="AutoClLv2" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
@@ -46,7 +46,7 @@
             </GroupBox>
             <GroupBox Header="Critical click" Grid.Row="1" Grid.Column="0" Margin="65">
                 <StackPanel>
-                    <Button x:Name="CriticalClickButton" Content="Critical clicks" Height="40" Width="102" IsEnabled="false" Click="UpgradeCritical_click"></Button>
+                    <Button x:Name="CriticalClickButton" Content="{Binding CriticalClickPrice}" Height="40" Width="102" IsEnabled="false" Click="UpgradeCritical_click"></Button>
                     <StackPanel Orientation="Horizontal">
                         <Border x:Name="CritClLv1" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
                         <Border x:Name="CritClLv2" Height="20" Width="34" Background="Gray" BorderBrush="Black" Margin="1"></Border>
@@ -55,7 +55,7 @@
                 </StackPanel>     
             </GroupBox>
             <GroupBox Header="Restart" Grid.Row="1" Grid.Column="1" Margin="65">
-                <Button Content="Restart" Height="40" Width="102" IsEnabled="false"></Button>
+                <Button x:Name="RestartButton" Content="900" Height="40" Width="102" IsEnabled="false" Click="Restart_click"></Button>
             </GroupBox>
             </Grid>
         </Grid>
