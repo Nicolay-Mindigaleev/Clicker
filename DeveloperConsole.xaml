@@ -1,0 +1,39 @@
+<Window x:Class="Grathic_app_2._0.DeveloperConsole"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Grathic_app_2._0"
+        mc:Ignorable="d"
+        Title="DeveloperConsole" Height="450" Width="800">
+        <Grid>
+       
+        <StackPanel>
+            <TextBlock Text="{Binding PlayerScore, StringFormat=Player clicks: {0}}"/>
+            <StackPanel>
+                <TextBlock Text="Add clicks"/>
+                <xctk:IntegerUpDown x:Name="NewClicksValue" Value="0" Height="40" Width="100"></xctk:IntegerUpDown>
+                <Button Height="40" Width="100" Content="Add" Click="SetCLicksButton_click"></Button>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Change power click level"/>
+                <xctk:IntegerUpDown Minimum="0" Maximum="15" Value="0" Height="40" Width="100" ValueChanged="PowerLevel_changed"></xctk:IntegerUpDown>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Change auto click level"/>
+                <xctk:IntegerUpDown Minimum="0" Maximum="15" Value="0" Height="40" Width="100" ValueChanged="AutoLevel_changed"></xctk:IntegerUpDown>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Change critical click level"/>
+                <xctk:IntegerUpDown Minimum="0" Maximum="15" Value="0" Height="40" Width="100" ValueChanged="CriticalLevel_changed"></xctk:IntegerUpDown>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Change winner score"/>
+                <xctk:IntegerUpDown x:Name="NewWinnerScore" Minimum="1" Maximum="10000000" Value="1000" Height="40" Width="100"></xctk:IntegerUpDown>
+                <Button Height="40" Width="100" Content="Apply" Click="SetWinnerScore_click"></Button>
+            </StackPanel>
+        </StackPanel>
+        </Grid>
+         
+</Window>

@@ -19,7 +19,7 @@ namespace Grathic_app_2._0;
 public partial class ShopWindow : Window, INotifyPropertyChanged
 {
     public event Action<int> ScoreChanged;
-    public event Action ClickPowerUpgrade;
+    public event Action<int> ClickPowerUpgrade;
     public event Action<int> ClickAutoUpgrade;
     public event Action<int> ClickCriticalUpgrade;
     public event Action ClickRestartButton;
@@ -39,8 +39,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
         UpdateTimer = new DispatcherTimer();
         UpdateTimer.Interval = TimeSpan.FromMilliseconds(100);
         UpdateTimer.Tick += UpdateScore;
-        UpdateTimer.Start();
-        
+        UpdateTimer.Start(); 
     }
     private int playerScore;
     public int PlayerScore
@@ -169,7 +168,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
     {
         PlayerScore -= powerClickPrice;
         ScoreChanged?.Invoke(playerScore);
-        ClickPowerUpgrade?.Invoke();
+        ClickPowerUpgrade?.Invoke(powerClickLevel);
         powerClickLevel++;
         PowerClickPrice *= 4;
         CheckData();
