@@ -26,9 +26,7 @@
             HorizontalAlignment="Center" VerticalAlignment="Top"
             Margin="0,150,0,0"/>
     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-    <Canvas>
     <Button x:Name="MainButton" Content="Click" Height="40" Width="100" Click="mainButton_click" Margin="0,0,50,0"></Button>
-    </Canvas>
     <Button x:Name="ShopButton" Content="Shop" Height="40" Width="100" IsEnabled="false" Click="ShopButton_click"></Button>
     </StackPanel>
     </Grid>
