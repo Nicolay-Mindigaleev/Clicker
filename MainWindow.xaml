@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Grathic_app_2._0"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="Clicker The game" Height="450" Width="800"
         PreviewKeyDown="Window_PreviewKeyDown">
     <Grid>
-    <StackPanel Orientation="Horizontal">
-        <TextBlock Text="Clicks count: "></TextBlock>
-        <TextBlock Text="{Binding ClicksCount}"></TextBlock>
+    <StackPanel Orientation="Horizontal" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <TextBlock Text="Clicks count: " FontSize="14" Foreground="Gray"></TextBlock>
+        <TextBlock Text="{Binding ClicksCount}" FontSize="14" Foreground="#333" FontWeight="SemiBold"></TextBlock>
         <TextBlock x:Name="AutoClickPopup" Text="" 
             FontSize="16" FontWeight="Bold" 
             Foreground="LightGray"
@@ -25,7 +25,11 @@
             Opacity="0"
             HorizontalAlignment="Center" VerticalAlignment="Top"
             Margin="0,150,0,0"/>
-    <Button x:Name="MainButton" Content="Click" Height="40" Width="100" Click="mainButton_click"></Button>
-    <Button x:Name="ShopButton" Content="Shop" Height="40" Width="100" IsEnabled="false" HorizontalAlignment="Right" Click="ShopButton_click"></Button>
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+    <Canvas>
+    <Button x:Name="MainButton" Content="Click" Height="40" Width="100" Click="mainButton_click" Margin="0,0,50,0"></Button>
+    </Canvas>
+    <Button x:Name="ShopButton" Content="Shop" Height="40" Width="100" IsEnabled="false" Click="ShopButton_click"></Button>
+    </StackPanel>
     </Grid>
 </Window>

@@ -26,7 +26,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         InitializeComponent();
         CritClick = new Random();
+        RandomEvent = new Random();
         autoClickTimer = new DispatcherTimer();
+        
+        eventsArray = new Events[1];
+        eventsArray[0] = ButtonTeleport;
         autoClickTimer.Interval = TimeSpan.FromSeconds(2);
         autoClickTimer.Tick += AutoClickTimer_click;
         gameStartTime = DateTime.Now;
@@ -37,15 +41,23 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public int PowerClickLevel = 0;
     public int AutoClickLevel = 0;
     public int CriticalClickLevel = 0;
-    public float CriticalChance = 0;
+    public double CriticalChance = 0;
     private Random CritClick;
     private DispatcherTimer autoClickTimer;
     public int autoClickPower = 0;
     //Developer param
     private List<Key> keyCombinations = new List<Key>();
-
     private List<Key> KonamiCode = new List<Key>{Key.Up, Key.Up, Key.Down, Key.Down, Key.Left, Key.Right, Key.Left, Key.Right, Key.B, Key.A};
     private DateTime gameStartTime;
+    //Random event
+    private Random RandomEvent;
+    private double RandEventChance = 0.9f;//0.00001f;
+    private int eventsClicks = 0;
+    private int Duration = 50;
+    private Events currentEvent;
+    private bool isEvent = false;
+    private delegate void Events();
+    Events[] eventsArray;
     //global param
     private int clicksCount = 0;
     public int ClicksCount
@@ -67,7 +79,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             CritClickBonus = 5;
             ShowCritPopup();
         }
-            
         ClicksCount += clickPower * CritClickBonus;
         if (ClicksCount >= OpenedShopScoreCount)
         {
@@ -75,9 +86,36 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
         if (ClicksCount >= WinScore)
         {
-            MessageBox.Show("Game over");
+            WinMessageBox.Show(
+                "You won!\n\n" +
+                "Secret code for DevConsole:\n" +
+                "↑ ↑ ↓ ↓ ← → ← → B A\n\n" +
+                "(Available only in first 10 seconds of new game)",
+                "Congratulations!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
             MainButton.IsEnabled = false;
+            return;
         }
+        if (isEvent)
+        {
+            eventsClicks++;
+            currentEvent?.Invoke();
+            return;
+        }
+        double RandEventNum = RandomEvent.NextDouble();
+        if (RandEventNum < RandEventChance)
+        {
+            WinMessageBox.Show("New event", "event", MessageBoxButton.OK, MessageBoxImage.Warning);
+            LaunchRandomEvent();
+            RandEventChance = 0.00001;
+        }
+        else
+        {
+            RandEventChance += 0.000005;
+        }
+
     }
     private void ShopButton_click(object sender, RoutedEventArgs e)
     {
@@ -121,7 +159,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             WinMessageBox.Show("Console access denied", "denied", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
-            
         DeveloperConsole developerConsole = new DeveloperConsole(this, clicksCount, PowerClickLevel, AutoClickLevel, CriticalClickLevel, WinScore);
         developerConsole.PowerChanged += PowerUpgrade;
         developerConsole.AutoChanged += AutoUpgrade;
@@ -192,5 +229,30 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         CritPopup.Opacity = 1;
         await Task.Delay(300);
         CritPopup.Opacity = 0;
+    }
+    private void LaunchRandomEvent()
+    {
+        eventsClicks = 0;
+        isEvent = true;
+        Random random = new Random();
+        int randNum = random.Next(0, eventsArray.Length);
+        eventsArray[randNum]?.Invoke();  
+        currentEvent = eventsArray[randNum];      
+    }
+    private void ButtonTeleport()
+    {
+        Random randCoord = new Random();
+        int leftMargin = randCoord.Next(10, 320);
+        int UpMargin = randCoord.Next(10, 320);
+        int rightMargin = randCoord.Next(10, 320);
+        int downMargin = randCoord.Next(10, 320);
+        MainButton.Margin = new Thickness(leftMargin, UpMargin, rightMargin, downMargin);
+        if (eventsClicks >= Duration)
+        {
+            isEvent = false;
+            MainButton.Margin = new Thickness(0, 0, 50, 0);
+            currentEvent = null;
+            WinMessageBox.Show("Event over", "end", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+        }
     }
 }
