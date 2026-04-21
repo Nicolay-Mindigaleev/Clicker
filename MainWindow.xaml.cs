@@ -12,6 +12,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Nodes;
 using System.Windows.Threading;
+using System.Threading.Tasks;
+using WinMessageBox = System.Windows.MessageBox;
 namespace Grathic_app_2._0;
 
 /// <summary>
@@ -27,6 +29,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         autoClickTimer = new DispatcherTimer();
         autoClickTimer.Interval = TimeSpan.FromSeconds(2);
         autoClickTimer.Tick += AutoClickTimer_click;
+        gameStartTime = DateTime.Now;
         this.DataContext = this;
     }
     //Shop parameters
@@ -38,9 +41,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private Random CritClick;
     private DispatcherTimer autoClickTimer;
     public int autoClickPower = 0;
+    //Developer param
+    private List<Key> keyCombinations = new List<Key>();
 
+    private List<Key> KonamiCode = new List<Key>{Key.Up, Key.Up, Key.Down, Key.Down, Key.Left, Key.Right, Key.Left, Key.Right, Key.B, Key.A};
+    private DateTime gameStartTime;
     //global param
-    private int clicksCount = 890;
+    private int clicksCount = 0;
     public int ClicksCount
     {
         get {return clicksCount;}
@@ -50,13 +57,17 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
     }
     public int clickPower = 1;
-    public const int WinScore = 1000;
+    public int WinScore = 1000;
     private void mainButton_click(object sender, RoutedEventArgs e)
     { 
         double CritNum = CritClick.NextDouble();
         int CritClickBonus = 1;
         if (CritNum <= CriticalChance)
+        {
             CritClickBonus = 5;
+            ShowCritPopup();
+        }
+            
         ClicksCount += clickPower * CritClickBonus;
         if (ClicksCount >= OpenedShopScoreCount)
         {
@@ -78,6 +89,45 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         shopWindow.ClickRestartButton += Restarting;
         shopWindow.ShowDialog();
     }
+    private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Delete)
+        {
+            keyCombinations.Clear();
+            return;
+        }
+        keyCombinations.Add(e.Key);
+        if (keyCombinations.Count > KonamiCode.Count)
+            keyCombinations.RemoveAt(0);
+        if (keyCombinations.Count == KonamiCode.Count)
+        {
+            for (int i = 0; i < KonamiCode.Count; i++)
+            {
+                if (keyCombinations[i] != KonamiCode[i])
+                {
+                    keyCombinations.Clear();
+                    return;
+                }
+            }
+            DeveloperConsoleActivated();
+            keyCombinations.Clear();
+        }
+    }
+    private void DeveloperConsoleActivated()
+    {
+        TimeSpan diffTime = DateTime.Now - gameStartTime;
+        if (diffTime.TotalSeconds > 10)
+        {
+            WinMessageBox.Show("Console access denied", "denied", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+            
+        DeveloperConsole developerConsole = new DeveloperConsole(this, clicksCount, PowerClickLevel, AutoClickLevel, CriticalClickLevel, WinScore);
+        developerConsole.PowerChanged += PowerUpgrade;
+        developerConsole.AutoChanged += AutoUpgrade;
+        developerConsole.CriticalChanged += CriticalUpgrade;
+        developerConsole.ShowDialog();        
+    }
     private void OnScoreChanged(int newScore)
     {
         ClicksCount = newScore;
@@ -87,14 +137,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }   
-    public void PowerUpgrade()
+    public void PowerUpgrade(int level)
     {
-        clickPower *= 2;
-        PowerClickLevel++;
+        clickPower = 2 * (level + 1);
+        PowerClickLevel = level + 1;
     }
     public void AutoUpgrade(int level)
     {
-        AutoClickLevel++;
+        AutoClickLevel = level + 1;
         if (level == 0)
         {
             autoClickPower = 3;
@@ -102,16 +152,18 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
         else if (level == 1)
             autoClickPower = 7;
-        else
+        else if (level == 2)
             autoClickPower = 10;
+        else
+            autoClickPower = (level + 1) * 3;
     }
     public void CriticalUpgrade(int level)
     {
         if (level == 0)
             CriticalChance = 0.005f;
         else
-            CriticalChance += 0.0025f;
-        CriticalClickLevel++;
+            CriticalChance = 0.005f + level * 0.0025f;
+        CriticalClickLevel = level + 1;
     }
     public void Restarting()
     {
@@ -126,5 +178,19 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void AutoClickTimer_click(object sender, EventArgs e)
     {
         ClicksCount += autoClickPower;
+        ShowAutoClickPopup();
+    }
+    private async void ShowAutoClickPopup()
+    {
+        AutoClickPopup.Text = $"+{autoClickPower}";
+        AutoClickPopup.Opacity = 1;
+        await Task.Delay(500);
+        AutoClickPopup.Opacity = 0;
+    }
+    private async void ShowCritPopup()
+    {
+        CritPopup.Opacity = 1;
+        await Task.Delay(300);
+        CritPopup.Opacity = 0;
     }
 }

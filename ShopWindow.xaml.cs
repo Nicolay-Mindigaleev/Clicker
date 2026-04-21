@@ -19,7 +19,7 @@ namespace Grathic_app_2._0;
 public partial class ShopWindow : Window, INotifyPropertyChanged
 {
     public event Action<int> ScoreChanged;
-    public event Action ClickPowerUpgrade;
+    public event Action<int> ClickPowerUpgrade;
     public event Action<int> ClickAutoUpgrade;
     public event Action<int> ClickCriticalUpgrade;
     public event Action ClickRestartButton;
@@ -39,8 +39,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
         UpdateTimer = new DispatcherTimer();
         UpdateTimer.Interval = TimeSpan.FromMilliseconds(100);
         UpdateTimer.Tick += UpdateScore;
-        UpdateTimer.Start();
-        
+        UpdateTimer.Start(); 
     }
     private int playerScore;
     public int PlayerScore
@@ -115,7 +114,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
             PowClLv1.Background = new SolidColorBrush(Colors.Yellow);
             PowClLv2.Background = new SolidColorBrush(Colors.Yellow);
         }
-        else if (powerClickLevel == 3)
+        else if (powerClickLevel >= 3)
         {
             PowClLv1.Background = new SolidColorBrush(Colors.Red);
             PowClLv2.Background = new SolidColorBrush(Colors.Red);
@@ -133,7 +132,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
             AutoClLv1.Background = new SolidColorBrush(Colors.Yellow);
             AutoClLv2.Background = new SolidColorBrush(Colors.Yellow);
         }
-        else if (autoClickLevel == 3)
+        else if (autoClickLevel >= 3)
         {
             AutoClLv1.Background = new SolidColorBrush(Colors.Red);
             AutoClLv2.Background = new SolidColorBrush(Colors.Red);
@@ -151,7 +150,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
             CritClLv1.Background = new SolidColorBrush(Colors.Yellow);
             CritClLv2.Background = new SolidColorBrush(Colors.Yellow);
         }
-        else if (criticalClickLevel == 3)
+        else if (criticalClickLevel >= 3)
         {
             CritClLv1.Background = new SolidColorBrush(Colors.Red);
             CritClLv2.Background = new SolidColorBrush(Colors.Red);
@@ -169,7 +168,7 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
     {
         PlayerScore -= powerClickPrice;
         ScoreChanged?.Invoke(playerScore);
-        ClickPowerUpgrade?.Invoke();
+        ClickPowerUpgrade?.Invoke(powerClickLevel);
         powerClickLevel++;
         PowerClickPrice *= 4;
         CheckData();
