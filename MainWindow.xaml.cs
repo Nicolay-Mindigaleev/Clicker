@@ -47,7 +47,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private List<Key> KonamiCode = new List<Key>{Key.Up, Key.Up, Key.Down, Key.Down, Key.Left, Key.Right, Key.Left, Key.Right, Key.B, Key.A};
     private DateTime gameStartTime;
     //global param
-    private int clicksCount = 100;
+    private int clicksCount = 0;
     public int ClicksCount
     {
         get {return clicksCount;}
@@ -118,7 +118,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         TimeSpan diffTime = DateTime.Now - gameStartTime;
         if (diffTime.TotalSeconds > 10)
         {
-            WinMessageBox.Show("Console access denied");
+            WinMessageBox.Show("Console access denied", "denied", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
             

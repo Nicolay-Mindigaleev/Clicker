@@ -7,33 +7,44 @@
         xmlns:local="clr-namespace:Grathic_app_2._0"
         mc:Ignorable="d"
         Title="DeveloperConsole" Height="450" Width="800">
-        <Grid>
-       
-        <StackPanel>
-            <TextBlock Text="{Binding PlayerScore, StringFormat=Player clicks: {0}}"/>
-            <StackPanel>
-                <TextBlock Text="Add clicks"/>
-                <xctk:IntegerUpDown x:Name="NewClicksValue" Value="0" Height="40" Width="100"></xctk:IntegerUpDown>
-                <Button Height="40" Width="100" Content="Add" Click="SetCLicksButton_click"></Button>
+        <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="{Binding PlayerScore, StringFormat=Player clicks: {0}}" Margin="0,0,0,10"/>
+            
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Add clicks"/>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <xctk:IntegerUpDown x:Name="NewClicksValue" Value="0" Height="30" Width="100"></xctk:IntegerUpDown>
+                <Button Height="30" Width="80" Content="Add" Click="SetCLicksButton_click" Margin="5,0,0,0"></Button>
             </StackPanel>
-            <StackPanel>
-                <TextBlock Text="Change power click level"/>
-                <xctk:IntegerUpDown Minimum="0" Maximum="15" Value="0" Height="40" Width="100" ValueChanged="PowerLevel_changed"></xctk:IntegerUpDown>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Change power click level" Margin="0,10,0,0"/>
+            <xctk:IntegerUpDown Grid.Row="2" Grid.Column="1" x:Name="PowerClicksLvlBox" Minimum="0" Maximum="15" Value="0" Height="30" Width="100" ValueChanged="PowerLevel_changed" Margin="0,10,0,0"></xctk:IntegerUpDown>
+            
+            <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Text="Change auto click level" Margin="0,10,0,0"/>
+            <xctk:IntegerUpDown Grid.Row="3" Grid.Column="1" x:Name="AutoClicksLvlBox" Minimum="0" Maximum="15" Value="0" Height="30" Width="100" ValueChanged="AutoLevel_changed" Margin="0,10,0,0"></xctk:IntegerUpDown>
+
+            <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Text="Change critical click level" Margin="0,10,0,0"/>
+            <xctk:IntegerUpDown Grid.Row="4" Grid.Column="1" x:Name="CriticalClicksLvlBox" Minimum="0" Maximum="15" Value="0" Height="30" Width="100" ValueChanged="CriticalLevel_changed" Margin="0,10,0,0"></xctk:IntegerUpDown>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Text="Change winner score" Margin="0,10,0,0"/>
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="0,10,0,0">
+                <xctk:IntegerUpDown x:Name="NewWinnerScore" Minimum="1" Maximum="10000000" Value="1000" Height="30" Width="100"></xctk:IntegerUpDown>
+                <Button Height="30" Width="80" Content="Apply" Click="SetWinnerScore_click" Margin="5,0,0,0"></Button>
             </StackPanel>
-            <StackPanel>
-                <TextBlock Text="Change auto click level"/>
-                <xctk:IntegerUpDown Minimum="0" Maximum="15" Value="0" Height="40" Width="100" ValueChanged="AutoLevel_changed"></xctk:IntegerUpDown>
-            </StackPanel>
-            <StackPanel>
-                <TextBlock Text="Change critical click level"/>
-                <xctk:IntegerUpDown Minimum="0" Maximum="15" Value="0" Height="40" Width="100" ValueChanged="CriticalLevel_changed"></xctk:IntegerUpDown>
-            </StackPanel>
-            <StackPanel>
-                <TextBlock Text="Change winner score"/>
-                <xctk:IntegerUpDown x:Name="NewWinnerScore" Minimum="1" Maximum="10000000" Value="1000" Height="40" Width="100"></xctk:IntegerUpDown>
-                <Button Height="40" Width="100" Content="Apply" Click="SetWinnerScore_click"></Button>
-            </StackPanel>
-        </StackPanel>
+            <Button Grid.Row="6" Grid.ColumnSpan="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="40" Width="100" Content="Close window" Click="CloseButton_click" Margin="10"></Button>
         </Grid>
          
 </Window>

@@ -30,7 +30,15 @@ public partial class DeveloperConsole : Window, INotifyPropertyChanged
         powerClickLevel = powClickLvl;
         autoClickLevel = autoClickLvl;
         criticalClickLevel = critClickLvl;
+        PowerClicksLvlBox.Value = powerClickLevel;
+        AutoClicksLvlBox.Value = autoClickLevel;
+        CriticalClicksLvlBox.Value = criticalClickLevel;
         WinScore = winScore;
+        UpdateTimer = new DispatcherTimer();
+        UpdateTimer.Interval = TimeSpan.FromMilliseconds(100);
+        UpdateTimer.Tick += UpdateScore;
+        UpdateTimer.Start(); 
+
     }
     private int playerScore;
     public int PlayerScore
@@ -48,6 +56,7 @@ public partial class DeveloperConsole : Window, INotifyPropertyChanged
     private int criticalClickLevel;
     private int WinScore;
     private MainWindow mainWindow;
+    private DispatcherTimer UpdateTimer;
     public void PowerLevel_changed(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
         powerClickLevel = (int)((IntegerUpDown)sender).Value;
@@ -71,11 +80,20 @@ public partial class DeveloperConsole : Window, INotifyPropertyChanged
     public void SetWinnerScore_click(object sender, RoutedEventArgs e)
     {
         mainWindow.WinScore = (int)NewWinnerScore.Value;
+        WinMessageBox.Show("Winner score changed succesfuly", "Success", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+    }
+    public void CloseButton_click(object sender, RoutedEventArgs e)
+    {
+        UpdateTimer.Stop();
+        this.Close();
+    }
+    public void UpdateScore(object sender, EventArgs e)
+    {
+        PlayerScore = mainWindow.ClicksCount;
     }
     public event PropertyChangedEventHandler PropertyChanged;
     private void OnPropertyChanged([CallerMemberName] string name = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        
     }   
 }
