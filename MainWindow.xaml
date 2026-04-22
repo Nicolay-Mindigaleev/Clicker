@@ -29,5 +29,12 @@
     <Button x:Name="MainButton" Content="Click" Height="40" Width="100" Click="mainButton_click" Margin="0,0,50,0"></Button>
     <Button x:Name="ShopButton" Content="Shop" Height="40" Width="100" IsEnabled="false" Click="ShopButton_click"></Button>
     </StackPanel>
+    <TextBlock x:Name="ComboText" 
+            Text="{Binding ComboClick, StringFormat=+{0}}" 
+            FontSize="14" FontWeight="Bold" 
+            Foreground="#555555"
+            HorizontalAlignment="Center" VerticalAlignment="Bottom"
+            Margin="0,0,0,150"
+            Visibility="Hidden"/>
     </Grid>
 </Window>
