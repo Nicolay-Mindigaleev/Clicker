@@ -202,6 +202,42 @@ public partial class ShopWindow : Window, INotifyPropertyChanged
             this.Close();         
         }
     }
+    private void PCB_MouseEnter(object sender, RoutedEventArgs e)
+    {
+        PowerUpDescription.Text = "Increases the pressing force per click";
+    }
+    
+    private void PCB_MouseLeave(object sender, RoutedEventArgs e)
+    {
+        PowerUpDescription.Text = "Hover over the power up to find out more details.";
+    }
+    private void ACB_MouseEnter(object sender, RoutedEventArgs e)
+    {
+        PowerUpDescription.Text = "Automatically adds clicks every two seconds";
+    }
+    
+    private void ACB_MouseLeave(object sender, RoutedEventArgs e)
+    {
+        PowerUpDescription.Text = "Hover over the power up to find out more details.";
+    }
+    private void CCB_MouseEnter(object sender, RoutedEventArgs e)
+    {
+        PowerUpDescription.Text = "There's a small chance your clicks will earn 5x more points. This upgrade increases your chances of a critical hit.";
+    }
+    
+    private void CCB_MouseLeave(object sender, RoutedEventArgs e)
+    {
+        PowerUpDescription.Text = "Hover over the power up to find out more details.";
+    }
+    private void Restart_MouseEnter(object sender, RoutedEventArgs e)
+    {
+        PowerUpDescription.Text = "Resets progress. Seriously. Doesn't do anything else.";
+    }
+    
+    private void Restart_MouseLeave(object sender, RoutedEventArgs e)
+    {
+        PowerUpDescription.Text = "Hover over the power up to find out more details.";
+    }
     public event PropertyChangedEventHandler PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string name = null)
     {

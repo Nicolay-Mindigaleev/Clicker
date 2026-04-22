@@ -28,12 +28,23 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         CritClick = new Random();
         RandomEvent = new Random();
         autoClickTimer = new DispatcherTimer();
-        
-        eventsArray = new Events[1];
-        eventsArray[0] = ButtonTeleport;
         autoClickTimer.Interval = TimeSpan.FromSeconds(2);
         autoClickTimer.Tick += AutoClickTimer_click;
+
+        eventsArray = new Events[1];
+        eventsArray[0] = ButtonTeleport;
+
         gameStartTime = DateTime.Now;
+        comboClickTimer = new DispatcherTimer();
+        comboClickTimer.Interval = TimeSpan.FromSeconds(2);
+        comboClickTimer.Tick += ResetComboClick;
+        comboDecayTimer = new DispatcherTimer();
+        comboDecayTimer.Interval = TimeSpan.FromMilliseconds(30);
+        comboDecayTimer.Tick += ResetComboClickRec;
+        VisibleTime = new DispatcherTimer();
+        VisibleTime.Interval = TimeSpan.FromSeconds(1);
+        VisibleTime.Tick += HideComboText;
+
         this.DataContext = this;
     }
     //Shop parameters
@@ -51,7 +62,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private DateTime gameStartTime;
     //Random event
     private Random RandomEvent;
-    private double RandEventChance = 0.9f;//0.00001f;
+    private double RandEventChance = 0.00001f;
     private int eventsClicks = 0;
     private int Duration = 50;
     private Events currentEvent;
@@ -68,6 +79,20 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 OnPropertyChanged(); 
             }
     }
+    private int comboClick = 0;
+    public int ComboClick
+    {
+        get {return comboClick;}
+        set
+        {
+            comboClick = value;
+            OnPropertyChanged(); 
+        }
+    }
+    private DispatcherTimer comboClickTimer;
+    private DispatcherTimer comboDecayTimer;
+    private DispatcherTimer VisibleTime;
+    private int targetCombo = 0; // целевое значение (будет уменьшаться до 0)
     public int clickPower = 1;
     public int WinScore = 1000;
     private void mainButton_click(object sender, RoutedEventArgs e)
@@ -80,6 +105,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             ShowCritPopup();
         }
         ClicksCount += clickPower * CritClickBonus;
+        ComboClick++;
+        if (ComboClick > 0)
+        {
+            ComboText.Visibility = Visibility.Visible;
+        }
+        comboDecayTimer.Stop();
+        comboClickTimer.Stop();
+        comboClickTimer.Start();
+        
         if (ClicksCount >= OpenedShopScoreCount)
         {
             ShopButton.IsEnabled = true;
@@ -229,6 +263,25 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         CritPopup.Opacity = 1;
         await Task.Delay(300);
         CritPopup.Opacity = 0;
+    }
+    private void ResetComboClick(object sender, EventArgs e)
+    {
+        comboDecayTimer.Start();
+        comboClickTimer.Stop();
+    }
+    private void ResetComboClickRec(object sender, EventArgs e)
+    {
+        ComboClick--;
+        if (ComboClick == 0)
+        {
+            VisibleTime.Start();
+            comboDecayTimer.Stop();
+        }       
+    }
+    private void HideComboText(object sender, EventArgs e)
+    {
+        ComboText.Visibility = Visibility.Hidden;
+        VisibleTime.Stop();
     }
     private void LaunchRandomEvent()
     {
